@@ -7,3 +7,5 @@
 - You need python and the required requirements listed in requirements.txt
 
 - The idea is to be able to simply edit code on the go or otherwise when I dont want heavy linting 
+
+- The aim is for a low memory footprint and smoother code editing experience
