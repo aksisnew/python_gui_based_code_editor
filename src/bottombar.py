@@ -7,7 +7,8 @@ from tkinter import ttk
 class BottomBar(ttk.Frame):
     def __init__(self, parent, *args, **kwargs):
         """
-        bottom bar manager
+        Initializes the BottomBar component with multi-threaded event processing
+        to prevent status updates from blocking the main UI thread.
         """
         super().__init__(parent, *args, **kwargs)
         
@@ -16,21 +17,22 @@ class BottomBar(ttk.Frame):
         
         # UI Elements
         self.status_label = ttk.Label(self, text="Ready", anchor="w")
-        self.status_label.pack(side=tk.LEFT, fill=tk.X, expand=True, px=5)
+        self.status_label.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
         
         self.stats_label = ttk.Label(
             self, 
             text="Ln 1, Col 0 | Chars: 0 | Sel: 0 chars (0 lines)", 
             anchor="e"
         )
-        self.stats_label.pack(side=tk.RIGHT, px=5)
+        self.stats_label.pack(side=tk.RIGHT, padx=5)
         
         # Start queue listener loop on the main Tkinter thread
         self._process_queue_events()
 
     def update_stats_async(self, stats):
         """
-       exposed api to receive
+        Public API: Receives stats dict from editor.py. Spawns a background thread 
+        to process calculations and posts the result to the queue.
         """
         threading.Thread(target=self._worker_process_stats, args=(stats,), daemon=True).start()
 
